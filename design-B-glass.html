@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundry Grove — The AI operating system that runs your company</title>
+<meta name="description" content="Foundry Grove builds the AI operating system that runs your business — agents doing the work, your people directing them. Built on the tools you already use.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#070809;--bg-2:#0c0e11;--panel:rgba(255,255,255,.025);--panel-2:rgba(255,255,255,.04);
+    --line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+    --ink:#f4f6f5;--text:#c3c9c6;--muted:#8b938e;--faint:#5f6661;
+    --accent:#3ddc97;--accent-2:#2bb87c;--accent-glow:rgba(61,220,151,.5);--maxw:1140px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  h1,h2,h3,h4{font-family:'Inter',sans-serif;font-weight:600;line-height:1.08;letter-spacing:-0.025em;color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'Geist Mono','SFMono-Regular',monospace}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+  .accent{color:var(--accent)}
+
+  /* ambient background */
+  .aurora{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .aurora::before{content:"";position:absolute;top:-30%;left:50%;width:90vw;height:90vw;transform:translateX(-50%);
+    background:radial-gradient(closest-side,rgba(61,220,151,.16),transparent 70%);filter:blur(40px);animation:drift 22s ease-in-out infinite}
+  .aurora::after{content:"";position:absolute;top:20%;left:-10%;width:60vw;height:60vw;
+    background:radial-gradient(closest-side,rgba(43,120,200,.10),transparent 70%);filter:blur(50px);animation:drift2 26s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-44%) translateY(30px)}}
+  @keyframes drift2{0%,100%{transform:translate(0,0)}50%{transform:translateX(40px) translateY(-20px)}}
+  .grid-overlay{position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse 80% 50% at 50% 0%,#000 30%,transparent 75%);opacity:.5}
+  .content{position:relative;z-index:1}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(7,8,9,.6);backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-size:19px;font-weight:600;letter-spacing:-.02em;display:flex;align-items:center;gap:10px;color:var(--ink)}
+  .logo .mark{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,var(--accent),var(--accent-2));box-shadow:0 0 16px var(--accent-glow)}
+  .nav-links{display:flex;align-items:center;gap:30px;font-size:14.5px;color:var(--muted)}
+  .nav-links a:not(.btn):hover{color:var(--ink)}
+  .btn{display:inline-block;background:var(--accent);color:#04140d;padding:10px 20px;border-radius:8px;font-weight:600;font-size:14.5px;transition:.18s;border:none;cursor:pointer;box-shadow:0 0 0 1px rgba(61,220,151,.4),0 8px 24px -10px var(--accent-glow)}
+  .btn:hover{background:#54e6a8;transform:translateY(-1px);box-shadow:0 0 0 1px rgba(61,220,151,.6),0 12px 30px -8px var(--accent-glow)}
+  .btn-ghost{background:var(--panel);color:var(--ink);border:1px solid var(--line-2);padding:10px 20px;border-radius:8px;font-weight:500;font-size:14.5px;transition:.18s;backdrop-filter:blur(8px)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--panel-2)}
+  .nav-toggle{display:none;background:none;border:none;color:var(--ink);font-size:26px;cursor:pointer}
+
+  .hero{position:relative;padding:130px 0 96px;text-align:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:30px;padding:7px 14px;border:1px solid var(--line);border-radius:30px;background:var(--panel);backdrop-filter:blur(8px)}
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent-glow)}
+  h1.hero-h{font-size:clamp(42px,7vw,82px);max-width:17ch;margin:0 auto;color:#fff;letter-spacing:-.04em;background:linear-gradient(180deg,#fff,#b9c2bd);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .hero-sub{font-size:clamp(17px,2vw,20px);color:var(--muted);max-width:60ch;margin:28px auto 0;line-height:1.6}
+  .hero-cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+  .hero-cta .btn,.hero-cta .btn-ghost{padding:14px 28px;font-size:15.5px}
+
+  /* proof strip */
+  .proof-strip{margin-top:30px}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:0}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:30px 28px;backdrop-filter:blur(10px);transition:.2s}
+  .stat:hover{border-color:var(--line-2);background:var(--panel-2)}
+  .stat .n{font-size:30px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+  .stat.wide .n{font-size:24px}
+  .stat .l{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.45}
+
+  section.block{padding:100px 0;position:relative}
+  .sec-label{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:18px;font-family:'Geist Mono',monospace}
+  h2.sec-h{font-size:clamp(30px,4.4vw,50px);max-width:20ch;color:var(--ink);letter-spacing:-.03em}
+  .lead{font-size:19px;color:var(--muted);max-width:64ch;margin-top:24px}
+  .lead p{margin-top:18px}.lead p:first-child{margin-top:0}
+  .pull{font-size:clamp(22px,3vw,32px);font-weight:600;line-height:1.25;max-width:28ch;margin-top:48px;padding-left:26px;border-left:2px solid var(--accent);color:var(--ink);letter-spacing:-.02em}
+
+  .mod-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:54px}
+  .mod{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:34px;transition:.25s;overflow:hidden;backdrop-filter:blur(10px)}
+  .mod::before{content:"";position:absolute;inset:0;border-radius:18px;padding:1px;background:linear-gradient(140deg,var(--accent-glow),transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .25s}
+  .mod:hover{transform:translateY(-4px);background:var(--panel-2);border-color:var(--line-2)}
+  .mod:hover::before{opacity:1}
+  .mod .num{font-family:'Geist Mono',monospace;font-size:12.5px;color:var(--accent);letter-spacing:.05em}
+  .mod h3{font-size:23px;margin-top:10px}
+  .mod .role{color:var(--muted);font-weight:500;font-size:14.5px;margin-top:6px}
+  .mod p{color:var(--muted);font-size:16px;margin-top:16px;line-height:1.6}
+  .mod-foot{font-size:clamp(18px,2.1vw,22px);font-weight:500;color:var(--text);margin-top:40px;max-width:62ch;line-height:1.45}
+  .mod-foot .accent{font-weight:600}
+
+  .hl{color:var(--accent);font-weight:500}
+  .stack{}
+  .logo-row{display:flex;flex-wrap:wrap;gap:26px 34px;align-items:center;margin-top:46px}
+  .logo-row img{height:28px;width:auto;max-width:90px;flex:none;opacity:.88;transition:transform .2s,opacity .2s}
+  .logo-row img:hover{opacity:1;transform:translateY(-2px)}
+
+  .prin-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:50px}
+  .prin{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px;backdrop-filter:blur(8px);transition:.2s}
+  .prin:hover{border-color:var(--line-2);background:var(--panel-2)}
+  .prin .pn{font-family:'Geist Mono',monospace;font-size:14px;font-weight:500;color:#04140d;background:var(--accent);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px -4px var(--accent-glow)}
+  .prin h3{font-size:20px;margin-top:18px}
+  .prin p{color:var(--muted);font-size:15.5px;margin-top:12px;line-height:1.6}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:54px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:32px;backdrop-filter:blur(8px)}
+  .step .k{font-size:21px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:10px}
+  .step .k::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent-glow)}
+  .step p{color:var(--muted);font-size:15.5px;margin-top:16px;line-height:1.6}
+  .offramp{margin-top:38px;background:linear-gradient(140deg,rgba(61,220,151,.08),var(--panel));border:1px solid var(--line-2);border-radius:16px;padding:30px 34px;backdrop-filter:blur(8px)}
+  .offramp h4{font-size:20px;margin-bottom:10px;color:var(--ink)}
+  .offramp p{color:var(--text);font-size:16px;max-width:74ch}
+
+  .callout{margin-top:36px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px 32px;font-weight:500;font-size:20px;line-height:1.4;color:var(--ink);max-width:68ch;backdrop-filter:blur(8px)}
+
+  .casetag{display:inline-block;font-family:'Geist Mono',monospace;font-size:12.5px;letter-spacing:.06em;color:var(--accent);background:rgba(61,220,151,.08);border:1px solid var(--line);border-radius:30px;padding:7px 16px;margin-top:14px}
+  .case-intro{color:var(--muted);font-size:17px;max-width:64ch;margin-top:22px}
+  .lead-block{font-size:clamp(22px,2.7vw,30px);font-weight:600;line-height:1.32;max-width:34ch;margin-top:34px;color:var(--ink);letter-spacing:-.02em}
+  .proof-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+  .pcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px;backdrop-filter:blur(8px);transition:.2s}
+  .pcard:hover{border-color:var(--line-2);background:var(--panel-2)}
+  .pcard b{color:var(--ink);font-weight:600}
+  .pcard p{color:var(--muted);font-size:16px;margin-top:2px;line-height:1.55}
+  .anecdote{margin-top:30px;padding:36px;border:1px solid var(--line-2);border-radius:18px;background:linear-gradient(140deg,rgba(61,220,151,.06),var(--panel));backdrop-filter:blur(8px)}
+  .anecdote .q{font-weight:500;font-size:clamp(19px,2.2vw,24px);line-height:1.45;color:var(--ink);max-width:64ch;letter-spacing:-.01em}
+  .anecdote .cap{color:var(--accent);font-size:14.5px;margin-top:18px;font-family:'Geist Mono',monospace}
+
+  .about-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:50px;align-items:start;margin-top:40px}
+  .about-body p{color:var(--text);font-size:18px;margin-top:20px;line-height:1.65}
+  .about-body p:first-child{margin-top:0}
+  .about-card{background:var(--panel);border:1px solid var(--line-2);border-radius:18px;padding:34px;position:sticky;top:90px;backdrop-filter:blur(10px)}
+  .about-card .ct{font-family:'Geist Mono',monospace;font-size:12.5px;letter-spacing:.06em;color:var(--accent)}
+  .about-card .cap-row{display:flex;align-items:flex-start;gap:11px;margin-top:16px;font-size:15.5px;color:var(--text)}
+  .about-card .cap-row .d{width:7px;height:7px;border-radius:50%;background:var(--accent);margin-top:8px;flex:none;box-shadow:0 0 8px var(--accent-glow)}
+  .about-card .div{height:1px;background:var(--line);margin:24px 0}
+  .about-card .em{font-size:15px;color:var(--muted)}
+  .about-card a{color:var(--ink);font-weight:500}.about-card a:hover{color:var(--accent)}
+
+  .closing{position:relative;padding:120px 0;text-align:center}
+  .closing h2{font-size:clamp(32px,4.6vw,54px);max-width:20ch;margin:0 auto;color:#fff;letter-spacing:-.03em;background:linear-gradient(180deg,#fff,#b9c2bd);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .closing .sub{color:var(--muted);font-size:18px;max-width:66ch;margin:22px auto 0}
+  .closing-cta{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap;justify-content:center}
+  .closing-cta .btn,.closing-cta .btn-ghost{padding:15px 32px;font-size:15.5px}
+
+  footer{border-top:1px solid var(--line);padding:44px 0}
+  .foot-inner{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .foot-inner .l{color:var(--muted);font-size:14.5px}
+  .foot-tag{color:var(--faint);font-size:14.5px;margin-top:4px}
+  .foot-links{display:flex;gap:22px;font-size:14.5px;color:var(--muted)}
+  .foot-links a:hover{color:var(--accent)}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* concept — sequence flip */
+  .concept-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:48px;align-items:start;margin-top:30px}
+  .concept-grid .lead{margin-top:0}
+  .seq-card{position:sticky;top:90px;background:var(--panel);border:1px solid var(--line-2);border-radius:18px;padding:28px;backdrop-filter:blur(10px)}
+  .seq{display:flex;flex-direction:column;gap:9px}
+  .sc-label{font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+  .seq.old .sc-label{color:var(--faint)}
+  .seq.new .sc-label{color:var(--accent)}
+  .seq-step{display:flex;align-items:center;gap:13px;padding:13px 15px;border:1px solid var(--line);border-radius:11px;background:var(--bg-2);font-size:14.5px;color:var(--text);transition:.2s}
+  .seq.old .seq-step{color:var(--muted);border-style:dashed}
+  .seq.new .seq-step{border-color:var(--line-2)}
+  .seq.new .seq-step:hover{border-color:var(--accent);background:var(--panel-2)}
+  .seq-step .si{font-family:'Geist Mono',monospace;font-size:12px;color:var(--accent);flex:none;width:18px}
+  .seq.old .seq-step .si{color:var(--faint)}
+  .seq-step b{color:var(--ink);font-weight:600}
+  .seq-step s{text-decoration-color:var(--faint)}
+  .seq-flip{display:flex;align-items:center;gap:12px;margin:18px 2px;color:var(--accent);font-family:'Geist Mono',monospace;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+  .seq-flip .ln{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent)}
+
+  /* principles — ledger rows */
+  .prin-list{margin-top:50px;border-top:1px solid var(--line)}
+  .prow{display:grid;grid-template-columns:140px 1fr;gap:34px;align-items:start;padding:34px 10px;border-bottom:1px solid var(--line);transition:padding .25s,background .25s;position:relative}
+  .prow::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent);box-shadow:0 0 14px var(--accent-glow);transform:scaleY(0);transform-origin:top;transition:transform .3s}
+  .prow:hover{background:var(--panel);padding-left:24px;padding-right:24px}
+  .prow:hover::before{transform:scaleY(1)}
+  .prow .pn2{font-family:'Geist Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .prow .pn2 .big{display:block;font-family:'Inter',sans-serif;font-weight:600;font-size:46px;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:8px;transition:color .25s}
+  .prow:hover .pn2 .big{color:var(--accent)}
+  .prow h3{font-size:24px;letter-spacing:-.02em}
+  .prow p{color:var(--muted);font-size:16px;margin-top:12px;line-height:1.6;max-width:72ch}
+
+  @media(max-width:860px){
+    .concept-grid{grid-template-columns:1fr;gap:30px}
+    .seq-card{position:static}
+    .prow{grid-template-columns:1fr;gap:8px;padding:26px 10px}
+    .prow .pn2 .big{font-size:38px}
+    .nav-links{position:fixed;inset:66px 0 auto 0;background:rgba(7,8,9,.95);backdrop-filter:blur(16px);flex-direction:column;gap:0;padding:8px 0;border-bottom:1px solid var(--line);display:none}
+    .nav-links.open{display:flex}
+    .nav-links a:not(.btn){padding:14px 32px;width:100%}
+    .nav-links .btn{margin:12px 32px}
+    .nav-toggle{display:block}
+    .stat-row{grid-template-columns:1fr;gap:14px}
+    .logo-grid{grid-template-columns:repeat(3,1fr)}
+    .mod-grid,.prin-grid,.steps,.proof-cards{grid-template-columns:1fr}
+    .about-grid{grid-template-columns:1fr;gap:30px}
+    .about-card{position:static}
+    section.block{padding:74px 0}
+    .wrap{padding:0 22px}
+  }
+</style>
+</head>
+<body>
+<div class="aurora"></div>
+<div class="grid-overlay"></div>
+<div class="content">
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo"><span class="mark"></span>Foundry Grove</a>
+    <button class="nav-toggle" aria-label="Menu" onclick="document.getElementById('navlinks').classList.toggle('open')">≡</button>
+    <div class="nav-links" id="navlinks">
+      <a href="#concept">The Concept</a>
+      <a href="#build">What We Build</a>
+      <a href="#proof">Proof</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="btn">Start a Conversation</a>
+    </div>
+  </div>
+</nav>
+
+<span id="top"></span>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>AI operating systems for growing companies</div>
+    <h1 class="hero-h">Agents do the work. Your people run the company.</h1>
+    <p class="hero-sub">Foundry Grove builds the AI operating system that runs your business — agents doing the work, your people directing them. So a small team does 10x more, and spends its time deciding instead of doing. From vision to autonomous growth in six months or less.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn">Start a conversation</a>
+      <a href="#concept" class="btn-ghost">See how it works</a>
+    </div>
+  </div>
+</header>
+
+<section class="block proof-strip" style="padding-top:10px">
+  <div class="wrap">
+    <div class="stat-row reveal">
+      <div class="stat"><div class="n">10x</div><div class="l">the output from the same small team</div></div>
+      <div class="stat"><div class="n">3–6 months</div><div class="l">to stand up a system that lasts</div></div>
+      <div class="stat wide"><div class="n">Thousands, not millions</div><div class="l">to implement an agent-based system with human decision-makers — instead of hiring people first</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="concept">
+  <div class="wrap">
+    <div class="sec-label reveal">// the concept</div>
+    <h2 class="sec-h reveal">For the first time, people aren't your limiting factor.</h2>
+    <div class="concept-grid">
+      <div class="lead reveal">
+        <p>For most of business history, growth meant one thing: hire more people. Tech and software companies raised money largely to do it — more headcount to reach the goal, each person inventing a process around themselves. <span class="hl">People were always the limiting factor</span>, and the org chart became the process: expensive, rigid, and trapped in people's heads.</p>
+        <p>That's no longer true. Growth is now possible independent of scaling people. You can decide how the business should run, build the process, and build the agents that do the work — then add people only where judgment, relationships, and strategy genuinely require them, as the decision-makers and strategists rather than the process-fillers. <span class="hl">The whole sequence runs in reverse.</span></p>
+        <p>You already sense it should work this way. The hard part is knowing where to start when you begin with a team of people and a business that can't stop running. That's exactly what we do — we take you <span class="hl">from vision to autonomous growth in six months or less.</span></p>
+      </div>
+      <div class="seq-card reveal">
+        <div class="seq old">
+          <div class="sc-label">The old sequence</div>
+          <div class="seq-step"><span class="si">01</span><s>Hire more people</s></div>
+          <div class="seq-step"><span class="si">02</span><s>Each invents a process around themselves</s></div>
+          <div class="seq-step"><span class="si">03</span><s>Growth capped by headcount</s></div>
+        </div>
+        <div class="seq-flip"><span class="ln"></span>reverse it<span class="ln"></span></div>
+        <div class="seq new">
+          <div class="sc-label">The Foundry sequence</div>
+          <div class="seq-step"><span class="si">01</span><b>Decide how the business should run</b></div>
+          <div class="seq-step"><span class="si">02</span><b>Build the agents that do the work</b></div>
+          <div class="seq-step"><span class="si">03</span>Add people as decision-makers</div>
+        </div>
+      </div>
+    </div>
+    <div class="pull reveal">Everyone is selling agents that do tasks. We build the operating system those agents live inside — run by agents, directed by your people.</div>
+  </div>
+</section>
+
+<section class="block" id="build" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sec-label reveal">// what we build</div>
+    <h2 class="sec-h reveal">One operating system. Four modules. Built into your stack.</h2>
+    <div class="lead reveal">
+      <p>We build the Foundry Grove Operating System into your business — delivered as your own Foundry Architecture: the agents, cadences, and data flows that run your company. It has four modules. They interlock and share one data spine, which is the whole point — but most companies start with one and expand from there.</p>
+    </div>
+    <div class="mod-grid">
+      <div class="mod reveal"><div class="num">MODULE 01</div><h3>Revenue OS</h3><div class="role">Getting customers</div><p>The acquisition machine: lead generation, the sales process, and coordinated outreach across email, calls, and web — drafted by agents, sent in one consistent voice, with the next best action surfaced for every prospect, every week.</p></div>
+      <div class="mod reveal"><div class="num">MODULE 02</div><h3>Growth OS</h3><div class="role">Growing the customers you have</div><p>Onboarding, activation, retention, and expansion — everything after "closed." It's what some companies call customer success, built as a system instead of a headcount, and pointed at one thing: climbing your Company Score.</p></div>
+      <div class="mod reveal"><div class="num">MODULE 03</div><h3>Operations OS</h3><div class="role">Delivering consistently — and learning</div><p>How the business reliably delivers behind the scenes, and how customer signal becomes product evolution. A feedback loop tight enough that what you hear on a call today can ship this week.</p></div>
+      <div class="mod reveal"><div class="num">MODULE 04</div><h3>Management OS</h3><div class="role">Running the company</div><p>Your leadership cadence — priorities, accountability, the weekly meeting — rebuilt native to your company and woven into where your team already works, with agents handling the busywork. Not another rigid app to log into. The way you actually run the business.</p></div>
+    </div>
+    <div class="mod-foot reveal">And the whole system learns. Every action produces a measured outcome that feeds back in — so it gets <span class="accent">better every week</span> instead of going stale.</div>
+  </div>
+</section>
+
+<section class="block stack" id="stack">
+  <div class="wrap">
+    <div class="sec-label reveal">// built on your stack</div>
+    <h2 class="sec-h reveal">We work on top of your existing tools.</h2>
+    <div class="lead reveal">
+      <p>The Foundry Grove Operating System sits on top of the tools you already use and ties them together. Your team keeps working where they work — we build around your stack, not against it.</p>
+    </div>
+    <div class="logo-row reveal">
+      <img src="assets/logos/claude.png" alt="Claude" title="Claude" onerror="this.style.display='none'">
+      <img src="assets/logos/openai.svg" alt="ChatGPT" title="ChatGPT" onerror="this.style.display='none'">
+      <img src="assets/logos/slack.png" alt="Slack" title="Slack" onerror="this.style.display='none'">
+      <img src="assets/logos/gmail.png" alt="Gmail" title="Gmail" onerror="this.style.display='none'">
+      <img src="assets/logos/docs.png" alt="Google Docs" title="Google Docs" onerror="this.style.display='none'">
+      <img src="assets/logos/sheets.png" alt="Google Sheets" title="Google Sheets" onerror="this.style.display='none'">
+      <img src="assets/logos/notion.png" alt="Notion" title="Notion" onerror="this.style.display='none'">
+      <img src="assets/logos/airtable.png" alt="Airtable" title="Airtable" onerror="this.style.display='none'">
+      <img src="assets/logos/attio.svg" alt="Attio" title="Attio" onerror="this.style.display='none'">
+      <img src="assets/logos/apollo.png" alt="Apollo" title="Apollo" onerror="this.style.display='none'">
+      <img src="assets/logos/supabase.svg" alt="Supabase" title="Supabase" onerror="this.style.display='none'">
+      <img src="assets/logos/aws.svg" alt="AWS" title="AWS" onerror="this.style.display='none'">
+      <img src="assets/logos/asana.svg" alt="Asana" title="Asana" onerror="this.style.display='none'">
+      <img src="assets/logos/jira.png" alt="Jira" title="Jira" onerror="this.style.display='none'">
+      <img src="assets/logos/zapier.svg" alt="Zapier" title="Zapier" onerror="this.style.display='none'">
+      <img src="assets/logos/github.png" alt="GitHub" title="GitHub" onerror="this.style.display='none'">
+    </div>
+  </div>
+</section>
+
+<section class="block" id="principles">
+  <div class="wrap">
+    <div class="sec-label reveal">// what we believe</div>
+    <h2 class="sec-h reveal">A few principles, built into everything we make.</h2>
+    <div class="prin-list">
+      <div class="prow reveal"><div class="pn2">Principle<span class="big">01</span></div><div><h3>Everything points at one number.</h3><p>Before we build anything, we define your Company Score — the single metric that captures the value your business is trying to create. Profitability, growth, or a customer-result number that matters more than either. Then we build the whole system to move it.</p></div></div>
+      <div class="prow reveal"><div class="pn2">Principle<span class="big">02</span></div><div><h3>People decide. Agents do.</h3><p>Your team becomes the decision-makers and strategists; the agents become the doers. We don't replace your people — we change what they spend their days on, and put them in charge of the work instead of buried in it.</p></div></div>
+      <div class="prow reveal"><div class="pn2">Principle<span class="big">03</span></div><div><h3>Data drives the decisions.</h3><p>Every decision is backed by evidence, and every outcome feeds back in. We put the data in your people's hands and keep a constant feedback loop running, so the business learns from what actually happens — not from what someone assumed.</p></div></div>
+      <div class="prow reveal"><div class="pn2">Principle<span class="big">04</span></div><div><h3>Build, measure, evolve.</h3><p>We never expect to get it right the first time. Build it, measure it, change it, measure again — listen to customers and keep moving. The system is made to evolve, not to be finished.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="how">
+  <div class="wrap">
+    <div class="sec-label reveal">// how we work</div>
+    <h2 class="sec-h reveal">Blueprint, Forge, Run.</h2>
+    <div class="steps">
+      <div class="step reveal"><div class="k">Blueprint</div><p>We map how your business actually runs, define your Company Score, and pinpoint where agents replace manual work. You walk away with a documented operating blueprint and roadmap — a real asset, even if you stop here.</p></div>
+      <div class="step reveal"><div class="k">Forge</div><p>A foundry is where you shape something, test it, and reshape it until it's right. We build into your real stack, put it into action, learn from contact with reality, and refine. This is where the system meets the truth and gets better. Throughout: you work on the business; we build the system that runs it. You react to concrete drafts and decisions — never a blank page.</p></div>
+      <div class="step reveal"><div class="k">Run</div><p>The system operates; you supervise. Your effort steps down as the machine matures and your Company Score climbs — and the people on your team stay focused on the decisions only they can make.</p></div>
+    </div>
+    <div class="offramp reveal">
+      <h4>You're never locked in.</h4>
+      <p>Once the system is live, we can train your team and hand the whole thing over at any time. Many companies keep us on so they can stay focused on growing the business; others bring it fully in-house. Either way, the choice is always yours — that's the difference between a partner and a dependency.</p>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="who" style="padding-top:30px">
+  <div class="wrap">
+    <div class="sec-label reveal">// who it's for</div>
+    <h2 class="sec-h reveal">Built for companies with room to build.</h2>
+    <div class="lead reveal">
+      <p>Foundry Grove is for startups and growth-stage tech, fintech, and insurtech companies where <span class="hl">the founder is still the bottleneck</span> — carrying sales, onboarding, and customer success — and the assumed next move is "hire someone."</p>
+      <p>It works best where there's room to build: a modern stack and little legacy baggage. It's honestly <em>not</em> a fit for large enterprises tangled in systems that all have to be integrated with — the integration tax there eats the value. We only take on companies where we can <span class="hl">deliver a step-change</span>. That's exactly why we can.</p>
+    </div>
+    <div class="callout reveal">If customer knowledge lives in one person's head and your next hire would arrive to a blank page — build the system first, then hire into it.</div>
+  </div>
+</section>
+
+<section class="block" id="proof">
+  <div class="wrap">
+    <div class="sec-label reveal">// proof</div>
+    <span class="casetag reveal">One case study, in detail — Monark HQ</span>
+    <div class="case-intro reveal">This is one engagement, shown in full. It's not everything we've done — it's the clearest picture of what the system does once it's running.</div>
+    <div class="lead-block reveal">At Monark HQ, we grew from <span class="accent">10 to 200 managed customers</span> in about six months — with the same two-person team. We'd planned to hire more BDRs; instead we moved one into customer success. Two people now run all 200 brokers, and we expect the same team scales to 1,000.</div>
+    <div class="proof-cards">
+      <div class="pcard reveal"><p><b>5–10x fewer people.</b> We run the company with a fraction of the team it would otherwise take.</p></div>
+      <div class="pcard reveal"><p><b>A few thousand a month in software — doing the work of multiple salaries.</b> The economics aren't close.</p></div>
+      <div class="pcard reveal"><p><b>The revenue funnel, at scale.</b> Cost per meeting under $50. More than 70% of qualified calls convert to meetings. More than half of meetings become signed customers. The system surfaces the next best action for every customer, every week — so one person can run a motion that used to need a team.</p></div>
+      <div class="pcard reveal"><p><b>Built in six months. Run-the-company software rebuilt in a weekend</b> — tailored to us, living in the tools we already use.</p></div>
+    </div>
+    <div class="anecdote reveal">
+      <div class="q">A customer mentioned something they wanted on a call. It became a ticket that same day. The next morning, the CEO was on a call with a <em>different</em> customer, said "we're working on that," pulled up the platform — and it was already there.</div>
+      <div class="cap">Customer request to shipped feature in twenty-four hours. That's the feedback loop working.</div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="about">
+  <div class="wrap">
+    <div class="sec-label reveal">// about</div>
+    <h2 class="sec-h reveal">Built by operators, not vendors.</h2>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p>Foundry Grove was formed out of years of experience investing in, building, and growing companies. Its founders built Avondale into a leader in insurtech and fintech investing — and built the Foundry Grove Operating System inside real operating companies they backed and helped run, <span class="hl">with skin in the game</span>.</p>
+        <p>Behind it is a team of entrepreneurs, technical builders, and operators — engineers who have shipped real systems, with go-to-market and product expertise drawn from the companies we've built. This wasn't designed on a whiteboard. It was <span class="hl">built in the field</span>, by people who have run the playbook themselves.</p>
+        <p>Today we're building it for other companies — <span class="hl">helping them scale the same way we did</span>.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="ct">// what we bring</div>
+        <div class="cap-row"><span class="d"></span>Entrepreneurs &amp; operators who have built and run companies</div>
+        <div class="cap-row"><span class="d"></span>Experienced engineers who ship real systems</div>
+        <div class="cap-row"><span class="d"></span>Go-to-market &amp; product expertise</div>
+        <div class="div"></div>
+        <div class="em">Start a conversation:</div>
+        <div class="cap-row" style="margin-top:8px"><a href="mailto:karl.stark@foundrygrove.io">karl.stark@foundrygrove.io</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" id="contact">
+  <div class="wrap">
+    <h2 class="reveal">Build the system first. Then hire into it.</h2>
+    <p class="sub reveal">Most companies hit a wall and reach for the same fix — hire someone better to solve it. But what that person really does is figure out the process. So reverse it: define the right process, build it with agents, then add people to manage the agents and scale. You already know it should work this way. The hard part is knowing where to start. That's what we do — vision to a working operating model in six months or less.</p>
+    <p class="sub reveal" style="margin-top:16px;color:var(--faint)">One or two conversations tells us whether there's a fit. The first step is a Blueprint — and you keep it no matter what.</p>
+    <div class="closing-cta reveal">
+      <a href="mailto:karl.stark@foundrygrove.io?subject=Foundry%20Grove%20—%20Starting%20a%20conversation" class="btn">Start a conversation</a>
+      <a href="#proof" class="btn-ghost">See the case study</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-inner">
+    <div>
+      <div class="l">Foundry Grove · foundrygrove.io</div>
+      <div class="foot-tag">The AI operating system that runs your company.</div>
+    </div>
+    <div class="foot-links">
+      <a href="mailto:karl.stark@foundrygrove.io">karl.stark@foundrygrove.io</a>
+    </div>
+  </div>
+</footer>
+
+</div>
+<script>
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('#navlinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navlinks').classList.remove('open')));
+</script>
+</body>
+</html>
