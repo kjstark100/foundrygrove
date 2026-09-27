@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Foundry Grove Expeditions: small, curated multi-day river expeditions through the American West for people who build things. 2027 season.">
+<meta property="og:title" content="Foundry Grove Expeditions">
+<meta property="og:description" content="Build big things. Then go somewhere that makes you feel small. The 2027 season of multi-day river expeditions.">
+<meta property="og:image" content="https://foundrygrove.io/expeditions/img/p02.jpg">
+<title>Foundry Grove Expeditions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gloock&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600&display=swap">
+<style>
+:root{
+  --paper:#f1f2ef; --paper-2:#e5e7e2; --ink:#1c2226; --muted:#55616a; --line:#cfd4ce;
+  --accent:#9b3f24; --accent-ink:#ffffff; --field:#ffffff; --ok:#2f6b47;
+  --on-photo:#ffffff; --on-photo-muted:rgba(255,255,255,.82); --scrim:rgba(10,14,17,.55);
+  --display:"Gloock", "Georgia", "Times New Roman", serif;
+  --body:"Public Sans", "Helvetica Neue", Arial, sans-serif;
+  --label:"Barlow Condensed", "Arial Narrow", "Helvetica Neue", sans-serif;
+  --wrap:1180px; --gutter:clamp(16px,4vw,40px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#121619; --paper-2:#1a2024; --ink:#e7eae8; --muted:#9ca8ae; --line:#2d363b;
+    --accent:#e2895f; --accent-ink:#1a1210; --field:#1a2024; --ok:#7cc59a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#121619; --paper-2:#1a2024; --ink:#e7eae8; --muted:#9ca8ae; --line:#2d363b;
+  --accent:#e2895f; --accent-ink:#1a1210; --field:#1a2024; --ok:#7cc59a;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.08;text-wrap:balance;margin:0}
+h2{font-size:clamp(2rem,4.2vw,3.1rem)}
+h3{font-size:clamp(1.5rem,2.6vw,1.95rem)}
+p{margin:0}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:var(--gutter)}
+.eyebrow{font-family:var(--label);font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:.95rem;color:var(--accent)}
+.prose{max-width:62ch;display:grid;gap:1.1em}
+.prose p{color:var(--ink)}
+.lede{font-size:1.2rem;line-height:1.55}
+.credit{font-family:var(--label);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+section{padding-block:clamp(64px,9vw,120px)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+/* Top bar */
+.topbar{position:absolute;inset:0 0 auto 0;z-index:3;padding-top:env(safe-area-inset-top,0px)}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:22px;color:var(--on-photo)}
+.wordmark{font-family:var(--label);font-weight:600;text-transform:uppercase;letter-spacing:.2em;font-size:1rem;line-height:1.2}
+.wordmark span{display:block;font-weight:500;opacity:.8;letter-spacing:.16em;font-size:.82rem}
+.topbar nav{display:flex;gap:22px;font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.92rem}
+.topbar nav a{text-decoration:none;opacity:.9}
+.topbar nav a:hover{opacity:1;text-decoration:underline;text-underline-offset:4px}
+@media (max-width:640px){.topbar nav a:not(.nav-cta){display:none}}
+
+/* Hero */
+.hero{position:relative;min-height:clamp(560px,86vh,860px);display:flex;align-items:flex-end;color:var(--on-photo);padding-block:0;overflow:hidden;background:#1d242a}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 58%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,12,15,.45) 0%,rgba(8,12,15,0) 28%,rgba(8,12,15,0) 45%,rgba(8,12,15,.72) 100%)}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-block:140px clamp(40px,7vw,80px);display:grid;gap:22px}
+.hero .eyebrow{color:#f2c79a}
+.hero h1{font-size:clamp(2.4rem,5.6vw,4.6rem);max-width:19ch}
+.hero .sub{max-width:52ch;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--on-photo-muted)}
+.hero-row{display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--accent-ink);font-family:var(--label);font-weight:600;text-transform:uppercase;letter-spacing:.14em;font-size:1rem;padding:14px 24px;border:0;border-radius:2px;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.hero .btn{background:#e2895f;color:#1a1210}
+.hero-meta{font-family:var(--label);letter-spacing:.12em;text-transform:uppercase;font-size:.95rem;color:var(--on-photo-muted)}
+.hero .credit{position:absolute;right:var(--gutter);bottom:14px;z-index:2;color:rgba(255,255,255,.6)}
+
+/* Why we go */
+.why{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(32px,6vw,80px);align-items:center}
+.why figure{margin:0;display:grid;gap:10px}
+.why figure img{aspect-ratio:4/5;object-fit:cover;object-position:50% 60%;width:100%}
+.why h2{margin-block:14px 26px}
+.why .prose p:first-child::first-letter{font-family:var(--display);float:left;font-size:4.2em;line-height:.82;padding:6px 10px 0 0;color:var(--accent)}
+@media (max-width:860px){.why{grid-template-columns:1fr}.why figure img{aspect-ratio:4/3}}
+
+/* Quote band */
+.band{position:relative;min-height:clamp(380px,62vh,620px);display:flex;align-items:center;color:var(--on-photo);overflow:hidden;background:#3a2a22}
+.band img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:40% 32%}
+.band::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,12,14,.66) 0%,rgba(10,12,14,.25) 60%,rgba(10,12,14,0) 100%)}
+.band blockquote{position:relative;z-index:2;margin:0;max-width:20ch;font-family:var(--display);font-size:clamp(2rem,4.6vw,3.6rem);line-height:1.1}
+.band cite{display:block;margin-top:22px;font-family:var(--label);font-style:normal;text-transform:uppercase;letter-spacing:.14em;font-size:1rem;color:var(--on-photo-muted)}
+.band .credit{position:absolute;right:var(--gutter);bottom:14px;z-index:2;color:rgba(255,255,255,.65)}
+
+/* What this is */
+.what{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(32px,6vw,80px);align-items:start}
+.what h2{margin-block:14px 26px}
+.what figure{margin:0;display:grid;gap:10px;position:sticky;top:24px}
+.what figure img{aspect-ratio:4/5;object-fit:cover;object-position:50% 34%;width:100%}
+.handled{margin-top:34px;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.handled div{padding:16px 0;border-bottom:1px solid var(--line);display:grid;gap:2px}
+.handled div:nth-child(odd){padding-right:18px}
+.handled dt{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.88rem;color:var(--muted)}
+.handled dd{margin:0;font-weight:600}
+@media (max-width:860px){.what{grid-template-columns:1fr}.what figure{position:static}.what figure img{aspect-ratio:4/3}}
+
+/* For / not for */
+.fit{background:var(--paper-2)}
+.fit-head{display:grid;gap:14px;margin-bottom:48px;max-width:40ch}
+.fit-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,5vw,64px)}
+.fit-col h3{padding-bottom:16px;border-bottom:2px solid var(--ink);margin-bottom:6px}
+.fit-col.no h3{border-bottom-color:var(--muted);color:var(--muted)}
+.fit-col ul{list-style:none;margin:0;padding:0}
+.fit-col li{padding:16px 0 16px 34px;border-bottom:1px solid var(--line);position:relative}
+.fit-col li::before{position:absolute;left:0;top:15px;font-family:var(--label);font-weight:600;font-size:1.1rem}
+.fit-col.yes li::before{content:"+";color:var(--accent)}
+.fit-col.no li::before{content:"–";color:var(--muted)}
+.fit-note{margin-top:40px;font-family:var(--display);font-size:clamp(1.3rem,2.2vw,1.7rem);max-width:36ch;line-height:1.3}
+@media (max-width:760px){.fit-grid{grid-template-columns:1fr}}
+
+/* Expect */
+.expect-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:end;margin-bottom:48px}
+.expect-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--ink)}
+.expect-grid article{padding:22px 22px 8px 0;display:grid;gap:10px;align-content:start}
+.expect-grid article + article{padding-left:22px;border-left:1px solid var(--line)}
+.expect-grid h3{font-size:1.45rem}
+.expect-grid p{color:var(--muted);font-size:.98rem}
+.expect-grid .k{font-family:var(--label);text-transform:uppercase;letter-spacing:.14em;font-size:.85rem;color:var(--accent)}
+@media (max-width:960px){.expect-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.expect-grid article:nth-child(3){padding-left:0;border-left:0}.expect-grid article:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:560px){.expect-head{grid-template-columns:1fr}.expect-grid{grid-template-columns:1fr}.expect-grid article,.expect-grid article + article{padding-left:0;border-left:0;border-top:1px solid var(--line)}.expect-grid article:first-child{border-top:0}}
+
+/* Season */
+.season{background:var(--paper-2)}
+.season-head{display:grid;gap:14px;margin-bottom:40px;max-width:52ch}
+.season-head p{color:var(--muted)}
+.ribbon-scroll{overflow-x:auto;margin-bottom:64px;padding-bottom:6px}
+.ribbon{position:relative;min-width:720px;display:grid;grid-template-columns:repeat(12,1fr);border-top:2px solid var(--ink)}
+.ribbon .m{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.82rem;color:var(--muted);padding-top:8px;border-left:1px solid var(--line);padding-left:6px;height:74px}
+.ribbon .m:first-child{border-left:0;padding-left:0}
+.ribbon .t{position:absolute;top:-8px;height:14px;background:var(--accent);border-radius:1px}
+.ribbon .t.tbd{background:transparent;border:2px dashed var(--accent)}
+.ribbon .tl{position:absolute;top:34px;font-family:var(--label);font-weight:600;font-size:.86rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:var(--ink);text-decoration:none}
+.ribbon .tl:hover{color:var(--accent)}
+
+.trip{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(28px,5vw,64px);align-items:center;padding-block:clamp(36px,5vw,56px);border-top:1px solid var(--line)}
+.trip:nth-of-type(even) figure{order:2}
+.trip figure{margin:0;display:grid;gap:8px}
+.trip figure img{width:100%;aspect-ratio:5/4;object-fit:cover}
+.trip-body{display:grid;gap:16px}
+.trip-top{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+.trip-num{font-family:var(--label);font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-size:.95rem}
+.trip-date{font-family:var(--label);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:.95rem}
+.trip h3{font-size:clamp(1.8rem,3.2vw,2.5rem)}
+.trip p{color:var(--ink);max-width:58ch}
+.stats{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stats div{padding:10px 20px 10px 0;display:grid;gap:2px}
+.stats div + div{padding-left:20px;border-left:1px solid var(--line)}
+.stats dt{font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;color:var(--muted)}
+.stats dd{margin:0;font-weight:600;font-variant-numeric:tabular-nums;font-size:.98rem}
+.gauge{display:inline-flex;gap:3px;align-items:flex-end;height:16px;vertical-align:-2px;margin-right:6px}
+.gauge i{display:block;width:5px;background:var(--line)}
+.gauge i:nth-child(1){height:6px}.gauge i:nth-child(2){height:8px}.gauge i:nth-child(3){height:11px}.gauge i:nth-child(4){height:13px}.gauge i:nth-child(5){height:16px}
+.gauge[data-level="1"] i:nth-child(-n+1),.gauge[data-level="2"] i:nth-child(-n+2),.gauge[data-level="3"] i:nth-child(-n+3),.gauge[data-level="4"] i:nth-child(-n+4),.gauge[data-level="5"] i:nth-child(-n+5){background:var(--accent)}
+.flag{font-size:.95rem;color:var(--muted);border-left:2px solid var(--accent);padding-left:12px}
+@media (max-width:860px){.trip{grid-template-columns:1fr}.trip:nth-of-type(even) figure{order:0}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stats div:nth-child(3){padding-left:0;border-left:0}.stats div:nth-child(n+3){border-top:1px solid var(--line)}}
+
+.fine{margin-top:40px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,4vw,48px);padding-top:28px;border-top:2px solid var(--ink)}
+.fine div{display:grid;gap:6px}
+.fine h4{margin:0;font-family:var(--label);text-transform:uppercase;letter-spacing:.14em;font-size:.95rem;font-weight:600;color:var(--accent)}
+.fine p{color:var(--muted);font-size:.98rem}
+@media (max-width:760px){.fine{grid-template-columns:1fr}}
+
+/* Lead */
+.lead{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:clamp(28px,5vw,72px);align-items:center}
+.lead figure{margin:0;display:grid;gap:8px}
+.lead figure img{aspect-ratio:1/1;object-fit:cover;width:100%}
+.lead h2{margin-block:14px 22px}
+.strip{margin-top:clamp(56px,8vw,96px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.strip img{aspect-ratio:3/4;object-fit:cover;width:100%}
+.strip-cap{margin-top:12px}
+@media (max-width:860px){.lead{grid-template-columns:1fr}.lead figure img{aspect-ratio:4/3}}
+@media (max-width:620px){.strip{grid-template-columns:repeat(3,minmax(0,1fr))}.strip img:nth-child(n+4){display:none}}
+
+.choices{display:grid;gap:8px}
+.choices label{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start;border:1px solid var(--line);padding:12px 14px;border-radius:2px;cursor:pointer;font-size:.97rem}
+.choices input{margin:3px 0 0;width:18px;height:18px;accent-color:var(--accent)}
+.choices label:has(input:checked){border-color:var(--accent)}
+.qtitle{font-weight:600;font-size:1rem}
+.qgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+@media (max-width:900px){.qgrid{grid-template-columns:1fr}}
+/* Safety & FAQ */
+.safety-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,6vw,80px);align-items:start}
+.safety-grid h2{margin-block:14px 22px}
+.safe-list{list-style:none;margin:28px 0 0;padding:0;border-top:2px solid var(--ink)}
+.safe-list li{padding:16px 0;border-bottom:1px solid var(--line);display:grid;gap:4px}
+.safe-list strong{font-weight:600}
+.safe-list span{color:var(--muted);font-size:.98rem}
+.faq{border-top:2px solid var(--ink)}
+.faq details{border-bottom:1px solid var(--line)}
+.faq summary{cursor:pointer;list-style:none;padding:18px 40px 18px 0;position:relative;font-family:var(--display);font-size:1.3rem;line-height:1.25}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";position:absolute;right:4px;top:14px;font-family:var(--label);font-size:1.6rem;color:var(--accent)}
+.faq details[open] summary::after{content:"–"}
+.faq details p{padding:0 0 20px;color:var(--muted);max-width:60ch}
+@media (max-width:860px){.safety-grid{grid-template-columns:1fr}}
+
+/* Form */
+.interest{background:#141a1e;color:#e7eae8;--ink:#e7eae8;--muted:#a3aeb4;--line:#2f393f;--field:#1c2429;--accent:#e2895f;--accent-ink:#1a1210;--ok:#7cc59a;color-scheme:dark}
+.interest-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:end;margin-bottom:48px}
+.interest-head p{color:var(--muted)}
+form{display:grid;gap:40px}
+fieldset{border:0;margin:0;padding:0;display:grid;gap:18px;min-width:0}
+legend{font-family:var(--label);font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);font-size:1rem;padding:0;margin-bottom:18px}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 24px}
+@media (max-width:640px){.row,.interest-head{grid-template-columns:1fr}}
+label.f{display:grid;gap:6px;font-size:.95rem;font-weight:500}
+label.f small,.hint{color:var(--muted);font-weight:400;font-size:.88rem}
+input[type=text],input[type=email],input[type=tel],textarea{width:100%;background:var(--field);color:var(--ink);border:1px solid var(--line);border-radius:2px;padding:12px 14px;font:inherit;font-size:1rem}
+textarea{min-height:92px;resize:vertical}
+input:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.picks{display:grid;gap:0;border-top:1px solid var(--line)}
+.pick{border-bottom:1px solid var(--line);padding:16px 0;display:grid;gap:14px}
+.pick > label{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;cursor:pointer}
+.pick input[type=checkbox]{width:22px;height:22px;accent-color:var(--accent);margin:0}
+.pick .pn{font-family:var(--display);font-size:1.3rem;line-height:1.2}
+.pick .pd{font-family:var(--label);letter-spacing:.1em;text-transform:uppercase;font-size:.9rem;color:var(--muted);text-align:right}
+.pick-more{display:grid;gap:14px;padding-left:36px}
+.seg{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg span.q{font-size:.95rem;margin-right:6px}
+.seg label{display:inline-flex}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg label span{border:1px solid var(--line);padding:7px 14px;border-radius:2px;font-size:.92rem;cursor:pointer}
+.seg input:checked + span{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.seg input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+@media (max-width:520px){.pick > label{grid-template-columns:auto minmax(0,1fr)}.pick .pd{grid-column:2;text-align:left}.pick-more{padding-left:0}}
+.submit-row{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:center}
+.submit-row p{color:var(--muted);font-size:.92rem;max-width:52ch}
+.status{border:1px solid var(--line);padding:22px;display:grid;gap:12px}
+.status h3{font-size:1.6rem}
+.status.ok h3{color:var(--ok)}
+.status pre{white-space:pre-wrap;background:var(--field);border:1px solid var(--line);padding:14px;font-size:.88rem;max-height:280px;overflow:auto;margin:0}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.err{color:#f0a58a;font-size:.92rem}
+
+footer{background:#0e1214;color:#9ca8ae;padding-block:36px}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:var(--label);text-transform:uppercase;letter-spacing:.12em;font-size:.88rem}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="wordmark" href="/" style="text-decoration:none">Foundry Grove<span>Expeditions</span></a>
+    <nav aria-label="Sections">
+      <a href="#why">Why we go</a>
+      <a href="#fit">Who it's for</a>
+      <a href="#season">2027 season</a>
+      <a href="#safety">Safety &amp; FAQ</a>
+      <a href="#interest" class="nav-cta">I'm interested</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" aria-labelledby="hero-title">
+  <img src="img/p02.jpg" alt="Sunset over the Missouri River Breaks, calm water reflecting the last light">
+  <div class="wrap">
+    <div class="eyebrow">The 2027 season</div>
+    <h1 id="hero-title">Build big things. Then go somewhere that makes you feel small.</h1>
+    <p class="sub">Multi-day river expeditions through the canyons and wild country of the American West, for people who build things. You bring the right attitude. We'll handle everything else.</p>
+    <div class="hero-row">
+      <a class="btn" href="#interest">I'm interested</a>
+      <span class="hero-meta">Six trips · February to November · Small, curated groups</span>
+    </div>
+  </div>
+  <span class="credit">Missouri Breaks, 2026</span>
+</section>
+
+<section id="why">
+  <div class="wrap why">
+    <figure>
+      <img src="img/p16.jpg" alt="Two canoes rafted together, dwarfed by a layered red sandstone wall on the Green River" loading="lazy">
+      <figcaption class="credit">Green River, Stillwater Canyon, 2026</figcaption>
+    </figure>
+    <div>
+      <div class="eyebrow">Why we go</div>
+      <h2>The canyons are hundreds of millions of years old. Your inbox is not.</h2>
+      <div class="prose">
+        <p>There's a moment on every trip, usually the second or third evening, when the noise finally drains out. You're sitting on a sandbar, the light is climbing the canyon walls, and it hits you. Those layers of rock took hundreds of millions of years to lay down. The river cut through them one grain at a time. Everything you were worried about when you launched fits somewhere in the thinnest line near the top.</p>
+        <p>That's what I come out here for. These places make you small, in size and in time, and that turns out to be a gift. It's the best setting I know to think about who you really are, what actually matters, and where you fit in something much bigger than your company, your calendar or your inbox.</p>
+        <p>I've never come off the river without learning something about myself. I hope everyone who joins me does the same, and carries it back into how they build, how they lead and how they live.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" aria-label="Quote">
+  <img src="img/p03.jpg" alt="Badlands cliff glowing orange at sunset above the Missouri River" loading="lazy">
+  <div class="wrap" style="position:relative;z-index:2;width:100%">
+    <blockquote>Look at the walls long enough and your problems find their proper scale.<cite>Quad, on the Missouri</cite></blockquote>
+  </div>
+  <span class="credit">Missouri Breaks, 2026</span>
+</section>
+
+<section>
+  <div class="wrap what">
+    <div>
+      <div class="eyebrow">What this is</div>
+      <h2>We build companies. This is the other half of the equation.</h2>
+      <div class="prose">
+        <p class="lede">Each year I plan a handful of multi-day expeditions to some of the most remote and beautiful places in the West, and invite a small group of founders, operators and investors to come along.</p>
+        <p>We float, make camp, hike side canyons, cook well, pour a proper cocktail at sunset, and have the kind of conversations that don't happen in a conference room.</p>
+        <p><strong>You don't plan anything.</strong> I handle the logistics end to end. You get a packing list for your personal things, and I take care of the rest. Along the way you'll learn a lot about taking care of yourself in a place that isn't built for comfort.</p>
+      </div>
+      <dl class="handled">
+        <div><dt>Permits &amp; shuttles</dt><dd>Handled</dd></div>
+        <div><dt>Boats, paddles, PFDs</dt><dd>Provided or rented</dd></div>
+        <div><dt>Food, cooking, drinks</dt><dd>Handled, and done well</dd></div>
+        <div><dt>Camp, kitchen &amp; safety gear</dt><dd>Provided</dd></div>
+        <div><dt>Satellite comms &amp; first aid</dt><dd>Carried on every trip</dd></div>
+        <div><dt>You bring</dt><dd>Clothes, a few items, attitude</dd></div>
+      </dl>
+    </div>
+    <figure>
+      <img src="img/p06.jpg" alt="A cooler on a sandy beach with a loaded kayak at the water's edge and badlands peaks behind" loading="lazy">
+      <figcaption class="credit">Camp on the Missouri, 2026</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="fit" class="fit">
+  <div class="wrap">
+    <div class="fit-head">
+      <div class="eyebrow">Who it's for</div>
+      <h2>Attitude matters far more than skill.</h2>
+    </div>
+    <div class="fit-grid">
+      <div class="fit-col yes">
+        <h3>This is for you if</h3>
+        <ul>
+          <li>You want a real reset, not a retreat.</li>
+          <li>You're up for getting wet, dirty and a bit uncomfortable, and you can laugh about it.</li>
+          <li>You're happy to pitch in: loading boats, setting up camp, doing dishes. Out here we're a team, and we look out for each other's safety.</li>
+          <li>You're curious and low-ego, and you want to come back a little different than you left.</li>
+          <li>You've never paddled before. First-timers are welcome.</li>
+        </ul>
+      </div>
+      <div class="fit-col no">
+        <h3>This is probably not for you if</h3>
+        <ul>
+          <li>You need daily cell service, or have to "just check in."</li>
+          <li>A river toilet (the groover), sand in your sleeping bag or four days without a shower are dealbreakers.</li>
+          <li>You expect someone to do everything for you. I handle the logistics, but everyone does their share at camp.</li>
+          <li>You're not comfortable being far from help. On most of these trips the only way out is downstream.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fit-head-note" style="margin-top:36px;color:var(--muted);max-width:62ch">Groups are small by design. We read every response and put each group together based on fit, experience, availability and the size limits of each trip, so not every request will land on every trip.</p>
+    <p class="fit-note">About as luxurious as the middle of nowhere gets. No lodge, no hot shower. Top-notch gear, real meals, plenty to drink, and a very big sky.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="expect-head">
+      <div>
+        <div class="eyebrow">What to expect</div>
+        <h2 style="margin-top:14px">Comfortable in nature, not an endurance event.</h2>
+      </div>
+      <p class="lede" style="color:var(--muted)">It's less about fitness and more about being at ease with the things you'd normally avoid: being out of touch, being dirty, and going without modern conveniences.</p>
+    </div>
+    <div class="expect-grid">
+      <article><span class="k">Effort</span><h3>Mostly floating</h3><p>On the rivers we ride the current and paddle to steer, explore and reach camp. Yellowstone Lake is the exception: no current, real wind and full days of paddling.</p></article>
+      <article><span class="k">Experience</span><h3>None required</h3><p>First-time paddlers are welcome. You'll learn boat handling, camp craft and how to look after yourself in a hard environment as we go.</p></article>
+      <article><span class="k">Gear</span><h3>Nothing to buy</h3><p>No need to own a boat. I provide or rent boats, paddles, PFDs, dry bags and all group, kitchen and safety gear. You'll get a packing list for personal items.</p></article>
+      <article><span class="k">Remoteness</span><h3>Truly remote</h3><p>Once we launch, we're committed. No cell service, and evacuation can take hours. Each trip below carries a remoteness rating from 1 to 5.</p></article>
+    </div>
+  </div>
+</section>
+
+<section id="season" class="season">
+  <div class="wrap">
+    <div class="season-head">
+      <div class="eyebrow">The 2027 season</div>
+      <h2>Six expeditions, February to November.</h2>
+      <p>Each trip runs with a small, hand-picked group. Dates are tentative and flexible. If a trip calls to you but the dates don't work, tell us on the form and we'll try to move things around.</p>
+    </div>
+
+    <div class="ribbon-scroll">
+      <div class="ribbon" aria-hidden="true">
+        <div class="m">Jan</div><div class="m">Feb</div><div class="m">Mar</div><div class="m">Apr</div><div class="m">May</div><div class="m">Jun</div><div class="m">Jul</div><div class="m">Aug</div><div class="m">Sep</div><div class="m">Oct</div><div class="m">Nov</div><div class="m">Dec</div>
+        <span class="t" style="left:9.4%;width:1.1%"></span><a class="tl" href="#t1" style="left:9.4%">Black Canyon</a>
+        <span class="t" style="left:31.7%;width:1.4%"></span><a class="tl" href="#t2" style="left:29.6%;top:54px">Moab</a>
+        <span class="t" style="left:35.9%;width:1.4%"></span><a class="tl" href="#t3" style="left:35.9%">Smith</a>
+        <span class="t" style="left:47.4%;width:2.2%"></span><a class="tl" href="#t4" style="left:46.4%">San Juan</a>
+        <span class="t" style="left:59.6%;width:2.5%"></span><a class="tl" href="#t5" style="left:58.3%">Yellowstone</a>
+        <span class="t tbd" style="left:75%;width:16.6%"></span><a class="tl" href="#t6" style="left:77%">Fall wildcard</a>
+      </div>
+    </div>
+
+    <article class="trip" id="t1">
+      <figure><img src="img/p13.jpg" alt="A dark volcanic rock spire rising from the river, a yellow paddle blade in the foreground" loading="lazy"><figcaption class="credit">Pictured: Missouri Breaks, 2026</figcaption></figure>
+      <div class="trip-body">
+        <div class="trip-top"><span class="trip-num">Trip 1</span><span class="trip-date">Feb 4–7</span></div>
+        <h3>Black Canyon of the Colorado</h3>
+        <p>A winter escape just below Hoover Dam. We launch at the base of the dam and float roughly 30 miles through dark volcanic canyon walls. Hot springs tucked into side canyons, the glow of Emerald Cave, desert bighorn sheep on the cliffs, and warm afternoons while most of the country is frozen.</p>
+        <dl class="stats"><div><dt>Days / nights</dt><dd>4 / 3</dd></div><div><dt>Distance</dt><dd>~30 mi</dd></div><div><dt>Water</dt><dd>Flat to moving</dd></div><div><dt>Remoteness</dt><dd><span class="gauge" data-level="2"><i></i><i></i><i></i><i></i><i></i></span>2 of 5</dd></div></dl>
+      </div>
+    </article>
+
+    <article class="trip" id="t2">
+      <figure><img src="img/p15.jpg" alt="A tilted sandstone boulder in still brown water beneath red canyon walls and mesas" loading="lazy"><figcaption class="credit">Pictured: Green River near the Confluence, 2026</figcaption></figure>
+      <div class="trip-body">
+        <div class="trip-top"><span class="trip-num">Trip 2</span><span class="trip-date">Apr 23–27</span></div>
+        <h3>Colorado River: Moab to Spanish Bottom</h3>
+        <p>We launch just downstream of Moab for about 48 miles of calm river through the heart of Canyonlands National Park. We pass beneath Dead Horse Point, wind through Meander Canyon and reach the Confluence, where the Green and Colorado meet. At Spanish Bottom, a steep hike climbs toward the Doll House in the Maze. A jetboat brings us back upriver.</p>
+        <dl class="stats"><div><dt>Days / nights</dt><dd>5 / 4</dd></div><div><dt>Distance</dt><dd>~48 mi</dd></div><div><dt>Water</dt><dd>Flat</dd></div><div><dt>Remoteness</dt><dd><span class="gauge" data-level="4"><i></i><i></i><i></i><i></i><i></i></span>4 of 5</dd></div></dl>
+      </div>
+    </article>
+
+    <article class="trip" id="t3">
+      <figure><img src="img/p09.jpg" alt="Pale sandstone towers and castle-like formations above a wide green river" loading="lazy"><figcaption class="credit">Pictured: White Cliffs, Missouri Breaks, 2026</figcaption></figure>
+      <div class="trip-body">
+        <div class="trip-top"><span class="trip-num">Trip 3</span><span class="trip-date">May 10–14</span></div>
+        <h3>Smith River, Montana</h3>
+        <p>Montana's most coveted float: about 59 roadless miles through limestone canyons up to 1,500 feet deep, timed for spring high water. Expect pictographs, osprey and eagles, excellent trout water, and campsites you can't reach any other way.</p>
+        <dl class="stats"><div><dt>Days / nights</dt><dd>5 / 4</dd></div><div><dt>Distance</dt><dd>~59 mi</dd></div><div><dt>Water</dt><dd>Moving, Class I–II</dd></div><div><dt>Remoteness</dt><dd><span class="gauge" data-level="4"><i></i><i></i><i></i><i></i><i></i></span>4 of 5</dd></div></dl>
+        <p class="flag">Permits are awarded by lottery, so this trip depends on the draw.</p>
+      </div>
+    </article>
+
+    <article class="trip" id="t4">
+      <figure><img src="img/p04.jpg" alt="Early morning light on badlands hills across a wide, calm river, seen from the bow of a kayak" loading="lazy"><figcaption class="credit">Pictured: Missouri Breaks, 2026</figcaption></figure>
+      <div class="trip-body">
+        <div class="trip-top"><span class="trip-num">Trip 4</span><span class="trip-date">Jun 23–30</span></div>
+        <h3>San Juan River</h3>
+        <p>The full run from Bluff to Clay Hills, about 84 miles through Utah's red rock. Ancestral Puebloan cliff dwellings and petroglyph panels, the Goosenecks from below, the hike up the Honaker Trail, and some fun Class II water along the way. The longest desert trip of the year, and the most varied.</p>
+        <dl class="stats"><div><dt>Days / nights</dt><dd>8 / 7</dd></div><div><dt>Distance</dt><dd>~84 mi</dd></div><div><dt>Water</dt><dd>Moving, Class II</dd></div><div><dt>Remoteness</dt><dd><span class="gauge" data-level="4"><i></i><i></i><i></i><i></i><i></i></span>4 of 5</dd></div></dl>
+        <p class="flag">Shorter versions of this trip are possible. Tell us on the form if that would make it work for you.</p>
+      </div>
+    </article>
+
+    <article class="trip" id="t5">
+      <figure><img src="img/p08.jpg" alt="Broken clouds and sunbeams mirrored on perfectly still water" loading="lazy"><figcaption class="credit">Pictured: Missouri Breaks, 2026</figcaption></figure>
+      <div class="trip-body">
+        <div class="trip-top"><span class="trip-num">Trip 5</span><span class="trip-date">Aug 5–13</span></div>
+        <h3>Yellowstone Lake: the South and Southeast Arms</h3>
+        <p>We paddle into the no-motor arms of North America's largest high-altitude lake and camp at backcountry sites beneath the Absaroka Range. Bison, moose, bald eagles and grizzly country. The water is cold and the afternoon winds are serious. Early starts, big views and very few people. The one trip on the calendar that calls for steady paddling.</p>
+        <dl class="stats"><div><dt>Days / nights</dt><dd>9 / 8</dd></div><div><dt>Distance</dt><dd>Varies</dd></div><div><dt>Water</dt><dd>Open lake</dd></div><div><dt>Remoteness</dt><dd><span class="gauge" data-level="5"><i></i><i></i><i></i><i></i><i></i></span>5 of 5</dd></div></dl>
+        <p class="flag">Shorter versions of this trip are possible. Tell us on the form if that would make it work for you.</p>
+      </div>
+    </article>
+
+    <article class="trip" id="t6">
+      <figure><img src="img/p07.jpg" alt="A loaded inflatable kayak on the bank beneath a dark badlands peak and storm light" loading="lazy"><figcaption class="credit">Pictured: Missouri Breaks, 2026</figcaption></figure>
+      <div class="trip-body">
+        <div class="trip-top"><span class="trip-num">Trip 6</span><span class="trip-date">October or November</span></div>
+        <h3>Fall wildcard</h3>
+        <p>One more before winter. The options: a San Juan run in cooler October weather, Labyrinth Canyon on the Green River, or the Rio Grande through Big Bend in November. Tell us which one calls to you and we'll let interest decide.</p>
+        <dl class="stats"><div><dt>Days / nights</dt><dd>TBD</dd></div><div><dt>Distance</dt><dd>TBD</dd></div><div><dt>Water</dt><dd>Flat to moving</dd></div><div><dt>Remoteness</dt><dd><span class="gauge" data-level="4"><i></i><i></i><i></i><i></i><i></i></span>3–4 of 5</dd></div></dl>
+      </div>
+    </article>
+
+    <div class="fine">
+      <div><h4>Costs</h4><p>To be determined per trip. Participants share actual trip costs (permits, shuttles, boat and gear rental, food and drink), and I handle all the arrangements.</p></div>
+      <div><h4>Dates</h4><p>Tentative and subject to change based on permits, river flows and weather. If the dates don't work for you, tell us. We'll move things where we can.</p></div>
+      <div><h4>Commitment</h4><p>Expressing interest isn't a commitment on either side. We review every response and curate each group based on fit, experience, availability and group size limits.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap lead">
+    <figure><img src="img/bio.jpg" alt="Karl, known as Quad, smiling in a cap and sunglasses on a muddy desert river below red rock" loading="lazy" style="object-position:40% 40%"><figcaption class="credit">On the river in Utah</figcaption></figure>
+    <div>
+      <div class="eyebrow">Your trip lead</div>
+      <h2>Karl “Quad”</h2>
+      <div class="prose">
+        <p>I'm an investor and entrepreneur. I build insurance startups and run Foundry Grove, which helps startups build the operating systems that run their businesses.</p>
+        <p>Over the past ten years I've done dozens of expeditions through the American West: paddling, hiking, camping and being one with nature. These trips are how I reset, ground myself and rediscover my purpose in this universe.</p>
+        <p>I love sharing that experience with fascinating people who are looking for the same thing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="safety" class="season">
+  <div class="wrap safety-grid">
+    <div>
+      <div class="eyebrow">Safety</div>
+      <h2>Remote, not reckless.</h2>
+      <div class="prose">
+        <p>These places are far from help, so safety is planned in from the start. Here's what that looks like on every trip.</p>
+      </div>
+      <ul class="safe-list">
+        <li><strong>Satellite phone for emergencies</strong><span>There's no cell service where we're going. I carry a satellite phone so we can reach help, and get weather updates, from anywhere on the trip.</span></li>
+        <li><strong>A daily "we're OK" text</strong><span>Each day we send a satellite check-in text to your loved ones back home, so the people who care about you know you're safe.</span></li>
+        <li><strong>A plan left behind</strong><span>Our route, camps and expected take-out time are filed with someone at home before we launch, so someone knows when to expect us.</span></li>
+        <li><strong>First aid kit and a safety briefing</strong><span>A full first aid kit comes on every trip, and we go over the plan for emergencies, capsizes and weather before we get on the water.</span></li>
+        <li><strong>Life jackets on the water</strong><span>Everyone wears a properly fitted PFD while paddling. Cold water is the biggest risk on most of these trips, especially Yellowstone Lake.</span></li>
+        <li><strong>Flows and weather decide</strong><span>I watch river flows, wind and forecasts before and during each trip. If conditions are wrong, we change the plan, wait it out or reschedule.</span></li>
+        <li><strong>Wildlife awareness</strong><span>Bear-safe food storage and bear spray in grizzly country, and simple camp habits everywhere else.</span></li>
+      </ul>
+    </div>
+    <div>
+      <div class="eyebrow">Questions</div>
+      <h2>FAQ</h2>
+      <div class="faq">
+        <details><summary>Do I need paddling experience?</summary><p>No. First-timers are welcome. Most of these trips are floats on moving water, and you'll pick up what you need on the first day. Attitude matters more than skill.</p></details>
+        <details><summary>What does it cost?</summary><p>Costs are still being worked out and will vary by trip. Everyone shares the actual trip costs (permits, shuttles, boat and gear rental, food and drink), and I handle all the arrangements.</p></details>
+        <details><summary>What do I need to bring?</summary><p>Just personal items: clothing, a sleeping bag and pad if you have them, toiletries and anything personal. You'll get a packing list well ahead of time. Boats, paddles, life jackets, dry bags, kitchen and camp gear are covered.</p></details>
+        <details><summary>How do I get to the start?</summary><p>We rendezvous at the nearest airport and arrange transportation to the put-in. Our vehicles will be waiting for us at the take-out, and we drive straight to the nearest hot shower.</p></details>
+        <details><summary>Can I reach anyone while we're out?</summary><p>Plan to be out of touch. There's no cell service on the river. The satellite phone is for emergencies, and we send a daily "we're OK" text to your loved ones. Let your people know you'll otherwise be offline, and bring a small battery pack for your camera.</p></details>
+        <details><summary>Where do we go to the bathroom?</summary><p>We follow Leave No Trace practices. For #2 we carry a portable river toilet called the groover. It sounds worse than it is, and it usually has the best view in camp. All liquid waste goes in the river.</p></details>
+        <details><summary>What about food and drink?</summary><p>We eat well: real meals cooked in camp, coffee in the morning and a proper cocktail at sunset. Tell us about any dietary restrictions on the form and we'll plan around them.</p></details>
+        <details><summary>What if the weather or water doesn't cooperate?</summary><p>Plans can change for flows, wind, heat or permits. If we have to move or shorten a trip, you'll hear from me as early as possible.</p></details>
+        <details><summary>Can I bring a friend or partner?</summary><p>Possibly. Groups are small and curated, so have them fill out the form too and mention each other. We'll see what works.</p></details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="interest" class="interest">
+  <div class="wrap">
+    <div class="interest-head">
+      <div>
+        <div class="eyebrow">Raise your hand</div>
+        <h2 style="margin-top:14px">Interested? Let us know.</h2>
+      </div>
+      <p class="lede">No commitment on either side. Tell us about yourself, which trips appeal to you and what would make them work. We review every response and curate each group based on fit, experience, availability and group size.</p>
+    </div>
+
+    <form id="eoi" novalidate>
+      <fieldset>
+        <legend>About you</legend>
+        <div class="row">
+          <label class="f" for="f-name">Name<input type="text" id="f-name" name="name" autocomplete="name" required></label>
+          <label class="f" for="f-email">Email<input type="email" id="f-email" name="email" autocomplete="email" required></label>
+          <label class="f" for="f-phone">Phone <small>optional</small><input type="tel" id="f-phone" name="phone" autocomplete="tel"></label>
+          <label class="f" for="f-ref">How do you know Quad, or who referred you?<input type="text" id="f-ref" name="referral"></label>
+        </div>
+        <label class="f" for="f-bio">Your professional bio and experience<small>A few sentences or a LinkedIn link is fine.</small><textarea id="f-bio" name="bio"></textarea></label>
+        <label class="f" for="f-why">Why are you interested, and what do you hope to get out of a trip like this?<textarea id="f-why" name="why"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Trips you're interested in</legend>
+        <p class="hint">Check any that appeal. Each one asks whether the dates work.</p>
+        <div class="picks" id="picks"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Your experience</legend>
+        <p class="hint">No wrong answers. First-timers are welcome; this helps us match people to trips and groups.</p>
+        <div class="qgrid">
+<div class="grp" role="radiogroup" aria-labelledby="q-paddling"><p class="qtitle" id="q-paddling" style="margin-bottom:10px">Paddling experience</p><div class="choices"><label for="paddling-0"><input type="radio" name="paddling" id="paddling-0" value="Central Park pedal boats, and that's about it"><span>Central Park pedal boats, and that's about it</span></label><label for="paddling-1"><input type="radio" name="paddling" id="paddling-1" value="I've been kayaking, canoeing or rafting a few times"><span>I've been kayaking, canoeing or rafting a few times</span></label><label for="paddling-2"><input type="radio" name="paddling" id="paddling-2" value="I earned my canoeing merit badge (or the grown-up equivalent)"><span>I earned my canoeing merit badge (or the grown-up equivalent)</span></label><label for="paddling-3"><input type="radio" name="paddling" id="paddling-3" value="I'm an experienced big-river paddler"><span>I'm an experienced big-river paddler</span></label></div></div>
+<div class="grp" role="radiogroup" aria-labelledby="q-camping"><p class="qtitle" id="q-camping" style="margin-bottom:10px">Camping and outdoor experience</p><div class="choices"><label for="camping-0"><input type="radio" name="camping" id="camping-0" value="My idea of roughing it is a hotel without room service"><span>My idea of roughing it is a hotel without room service</span></label><label for="camping-1"><input type="radio" name="camping" id="camping-1" value="I've car-camped or spent a night or two in a tent"><span>I've car-camped or spent a night or two in a tent</span></label><label for="camping-2"><input type="radio" name="camping" id="camping-2" value="I've done multi-day backpacking, paddling or camping trips"><span>I've done multi-day backpacking, paddling or camping trips</span></label><label for="camping-3"><input type="radio" name="camping" id="camping-3" value="I'm at home in the backcountry for a week or more"><span>I'm at home in the backcountry for a week or more</span></label></div></div>
+<div class="grp" role="radiogroup" aria-labelledby="q-fitness"><p class="qtitle" id="q-fitness" style="margin-bottom:10px">Physical fitness</p><div class="choices"><label for="fitness-0"><input type="radio" name="fitness" id="fitness-0" value="I'm working on it"><span>I'm working on it</span></label><label for="fitness-1"><input type="radio" name="fitness" id="fitness-1" value="Reasonably active: walks, the occasional hike or bike ride"><span>Reasonably active: walks, the occasional hike or bike ride</span></label><label for="fitness-2"><input type="radio" name="fitness" id="fitness-2" value="I work out regularly and can handle long, active days"><span>I work out regularly and can handle long, active days</span></label><label for="fitness-3"><input type="radio" name="fitness" id="fitness-3" value="Endurance type: marathons, big hikes, long rides"><span>Endurance type: marathons, big hikes, long rides</span></label></div></div>
+        </div>
+        <label class="f" for="f-exp">Describe your previous outdoor experience<small>Trips you've done, where, how long, and anything you're proud of or nervous about.</small><textarea id="f-exp" name="experienceDetail"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>A bit more</legend>
+        <label class="f" for="f-work">Anything that would make a trip work better for you?<textarea id="f-work" name="makeItWork" placeholder="Shorter itinerary, different dates, bringing a friend…"></textarea></label>
+        <div class="row">
+          <label class="f" for="f-diet">Dietary restrictions or preferences<input type="text" id="f-diet" name="dietary"></label>
+          <label class="f" for="f-med">Medical conditions we should know about? <small>optional; details can wait until you commit</small><input type="text" id="f-med" name="medical"></label>
+        </div>
+        <label class="f" for="f-else">Anything else?<textarea id="f-else" name="notes"></textarea></label>
+      </fieldset>
+
+      <div class="submit-row">
+        <button type="submit" class="btn" id="submit-btn">Send my interest</button>
+        <p>Your answers go only to Quad. Costs are to be determined and dates are subject to change.</p>
+      </div>
+      <p class="err" id="form-err" hidden></p>
+    </form>
+
+    <div class="status" id="status" hidden>
+      <h3 id="status-title"></h3>
+      <p id="status-body"></p>
+      <pre id="status-summary" hidden></pre>
+      <div class="submit-row">
+        <button type="button" class="btn" id="copy-btn" hidden>Copy my answers</button>
+        <button type="button" class="btn ghost" id="again-btn">Edit my answers</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer><div class="wrap"><span>Foundry Grove Expeditions · foundrygrove.io</span><span>2027 season · tentative</span></div></footer>
+
+<script>
+(function(){
+  var TRIPS=[
+    {id:"black-canyon",short:"Black Canyon (Feb)",name:"Black Canyon of the Colorado",dates:"Feb 4–7"},
+    {id:"potash",short:"Moab to Spanish Bottom (Apr)",name:"Colorado River: Moab to Spanish Bottom",dates:"Apr 23–27"},
+    {id:"smith",short:"Smith River (May)",name:"Smith River, Montana",dates:"May 10–14"},
+    {id:"san-juan",short:"San Juan (Jun)",name:"San Juan River",dates:"Jun 23–30",shorter:true},
+    {id:"yellowstone",short:"Yellowstone Lake (Aug)",name:"Yellowstone Lake",dates:"Aug 5–13",shorter:true},
+    {id:"fall",short:"Fall wildcard (Oct/Nov)",name:"Fall wildcard",dates:"Oct / Nov",fall:true}
+  ];
+  var picks=document.getElementById("picks");
+  TRIPS.forEach(function(t){
+    var w=document.createElement("div");w.className="pick";
+    var more='<div class="pick-more" id="more-'+t.id+'" hidden>'+
+      '<div class="seg" role="radiogroup" aria-label="Do the dates work for '+t.name+'?"><span class="q">Do the dates work?</span>'+
+      ['Yes','No','Maybe'].map(function(v){return '<label><input type="radio" name="fit-'+t.id+'" id="fit-'+t.id+'-'+v.toLowerCase()+'" value="'+v+'"><span>'+v+'</span></label>';}).join('')+'</div>'+
+      '<label class="f" for="con-'+t.id+'">If not, what dates or constraints would work?<input type="text" id="con-'+t.id+'" name="con-'+t.id+'"></label>'+
+      (t.shorter?'<div class="seg" role="radiogroup" aria-label="Would a shorter version make it work?"><span class="q">Would a shorter version make it work?</span>'+['Yes','No','Either way'].map(function(v,i){return '<label><input type="radio" name="short-'+t.id+'" id="short-'+t.id+'-'+i+'" value="'+v+'"><span>'+v+'</span></label>';}).join('')+'</div>':'')+
+      (t.fall?'<div class="seg" role="group" aria-label="Which fall option?"><span class="q">Which calls to you?</span>'+['San Juan (Oct)','Labyrinth Canyon','Rio Grande (Nov)'].map(function(v,i){return '<label><input type="checkbox" name="fallopt" id="fall-'+i+'" value="'+v+'"><span>'+v+'</span></label>';}).join('')+'</div>':'')+
+      '</div>';
+    w.innerHTML='<label for="pick-'+t.id+'"><input type="checkbox" id="pick-'+t.id+'" value="'+t.id+'"><span class="pn">'+t.name+'</span><span class="pd">'+t.dates+'</span></label>'+more;
+    picks.appendChild(w);
+    var cb=w.querySelector('#pick-'+t.id), m=w.querySelector('#more-'+t.id);
+    cb.addEventListener("change",function(){m.hidden=!cb.checked;});
+  });
+
+  var form=document.getElementById("eoi"), err=document.getElementById("form-err");
+  var statusEl=document.getElementById("status"), sTitle=document.getElementById("status-title"), sBody=document.getElementById("status-body"), sSum=document.getElementById("status-summary"), copyBtn=document.getElementById("copy-btn");
+  // Airtable automation webhook ("Website interest form → Responses" in the Foundry Grove Expeditions 2027 base).
+  var FORM_ENDPOINT="https://hooks.airtable.com/workflows/v1/genericWebhook/appJYyYlHw26xSsuz/wfl4MgMfGtcmUIlxI/wtrUxBEbFq1SztIAm";
+  function payload(d){
+    var sel=TRIPS.filter(function(t){return document.getElementById("pick-"+t.id).checked;});
+    var details=d.trips.map(function(t){var s=t.trip+" ("+t.dates+")"+(t.datesWork?" · dates work: "+t.datesWork:"");
+      if(t.constraints)s+=" · constraints: "+t.constraints; if(t.shorterVersion)s+=" · shorter version: "+t.shorterVersion;
+      if(t.fallOptions&&t.fallOptions.length)s+=" · options: "+t.fallOptions.join(" / "); return s;}).join("\n");
+    return {name:d.name,email:d.email,phone:d.phone,referral:d.referral,bio:d.bio,why:d.why,
+      trips:sel.map(function(t){return t.short;}).join(", "),tripDetails:details,
+      paddling:d.paddling,camping:d.camping,fitness:d.fitness,experienceDetail:d.experienceDetail,
+      makeItWork:d.makeItWork,dietary:d.dietary,medical:d.medical,notes:d.notes,summary:summary(d),submittedAt:d.submittedAt};
+  }
+  function send(d){
+    var body=JSON.stringify(payload(d));
+    return fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
+      .then(function(res){if(!res.ok)throw new Error("status "+res.status);},
+        function(){ // browser blocked the cross-site call: resend as a simple request
+          return fetch(FORM_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:body});
+        });
+  }
+
+  function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
+  function radio(name){var e=form.querySelector('input[name="'+name+'"]:checked');return e?e.value:"";}
+  function collect(){
+    var trips=TRIPS.filter(function(t){return document.getElementById("pick-"+t.id).checked;}).map(function(t){
+      var o={trip:t.name,dates:t.dates,datesWork:radio("fit-"+t.id),constraints:val("con-"+t.id)};
+      if(t.shorter)o.shorterVersion=radio("short-"+t.id);
+      if(t.fall)o.fallOptions=Array.prototype.map.call(form.querySelectorAll('input[name="fallopt"]:checked'),function(e){return e.value;});
+      return o;
+    });
+    return {name:val("f-name"),email:val("f-email"),phone:val("f-phone"),referral:val("f-ref"),trips:trips,
+      bio:val("f-bio"),why:val("f-why"),paddling:radio("paddling"),camping:radio("camping"),fitness:radio("fitness"),experienceDetail:val("f-exp"),makeItWork:val("f-work"),dietary:val("f-diet"),medical:val("f-med"),notes:val("f-else"),
+      submittedAt:new Date().toISOString()};
+  }
+  function summary(d){
+    var L=["Foundry Grove Expeditions – 2027 interest","Name: "+d.name,"Email: "+d.email];
+    if(d.phone)L.push("Phone: "+d.phone); if(d.referral)L.push("Referral: "+d.referral);
+    L.push("","Trips:");
+    d.trips.forEach(function(t){var s="- "+t.trip+" ("+t.dates+")"+(t.datesWork?" · dates work: "+t.datesWork:"");
+      if(t.constraints)s+=" · constraints: "+t.constraints; if(t.shorterVersion)s+=" · shorter version: "+t.shorterVersion;
+      if(t.fallOptions&&t.fallOptions.length)s+=" · options: "+t.fallOptions.join(", "); L.push(s);});
+    if(!d.trips.length)L.push("- None selected yet");
+    L.push("");
+    if(d.bio)L.push("Bio: "+d.bio); if(d.why)L.push("Why: "+d.why); if(d.paddling)L.push("Paddling: "+d.paddling); if(d.camping)L.push("Camping: "+d.camping); if(d.fitness)L.push("Fitness: "+d.fitness); if(d.experienceDetail)L.push("Outdoor experience: "+d.experienceDetail); if(d.makeItWork)L.push("What would make it work: "+d.makeItWork);
+    if(d.dietary)L.push("Dietary: "+d.dietary); if(d.medical)L.push("Medical: "+d.medical); if(d.notes)L.push("Notes: "+d.notes);
+    return L.join("\n");
+  }
+  function show(ok,d){
+    form.hidden=true;statusEl.hidden=false;statusEl.className="status"+(ok?" ok":"");
+    if(ok){sTitle.textContent="Thanks, "+(d.name.split(" ")[0]||"you")+". You're on the list.";
+      sBody.textContent="We review every response and will be in touch as groups and dates come together. Nothing is committed until you say so.";
+      sSum.hidden=true;copyBtn.hidden=true;}
+    else{sTitle.textContent="Your answers are ready to send.";
+      sBody.textContent="We couldn't send your answers automatically. Copy them below and send them to Quad by text or email.";
+      sSum.textContent=summary(d);sSum.hidden=false;copyBtn.hidden=false;}
+    statusEl.scrollIntoView({behavior:"smooth",block:"start"});
+  }
+  form.addEventListener("submit",function(e){
+    e.preventDefault();err.hidden=true;
+    var d=collect();
+    if(!d.name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)){err.textContent="Add your name and a valid email so Quad can reach you.";err.hidden=false;return;}
+    var btn=document.getElementById("submit-btn");btn.disabled=true;btn.textContent="Sending…";
+    (FORM_ENDPOINT?send(d):Promise.reject(new Error("no endpoint"))).then(function(){show(true,d);},function(){show(false,d);})
+    .finally(function(){btn.disabled=false;btn.textContent="Send my interest";});
+  });
+  copyBtn.addEventListener("click",function(){
+    var txt=sSum.textContent;
+    function sel(){var r=document.createRange();r.selectNodeContents(sSum);var s=window.getSelection();s.removeAllRanges();s.addRange(r);}
+    try{navigator.clipboard.writeText(txt).then(function(){copyBtn.textContent="Copied";},sel);}catch(x){sel();}
+  });
+  document.getElementById("again-btn").addEventListener("click",function(){statusEl.hidden=true;form.hidden=false;copyBtn.textContent="Copy my answers";form.scrollIntoView({block:"start"});});
+})();
+</script>
+
+</body>
+</html>
