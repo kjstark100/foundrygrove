@@ -532,6 +532,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     </div>
 
     <form id="eoi" novalidate>
+      <div style="position:absolute;left:-9999px" aria-hidden="true"><label for="f-website">Leave this empty<input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off"></label></div>
       <fieldset>
         <legend>About you</legend>
         <div class="row">
@@ -620,8 +621,8 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
 
   var form=document.getElementById("eoi"), err=document.getElementById("form-err");
   var statusEl=document.getElementById("status"), sTitle=document.getElementById("status-title"), sBody=document.getElementById("status-body"), sSum=document.getElementById("status-summary"), copyBtn=document.getElementById("copy-btn");
-  // Airtable automation webhook ("Website interest form → Responses" in the Foundry Grove Expeditions 2027 base).
-  var FORM_ENDPOINT="https://hooks.airtable.com/workflows/v1/genericWebhook/appJYyYlHw26xSsuz/wfl4MgMfGtcmUIlxI/wtrUxBEbFq1SztIAm";
+  // Cloudflare Worker that relays submissions to Airtable. Paste its address here.
+  var WORKER_URL="https://expeditions-form.karljstark.workers.dev/";
   function payload(d){
     var sel=TRIPS.filter(function(t){return document.getElementById("pick-"+t.id).checked;});
     var details=d.trips.map(function(t){var s=t.trip+" ("+t.dates+")"+(t.datesWork?" · dates work: "+t.datesWork:"");
@@ -633,12 +634,9 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
       makeItWork:d.makeItWork,dietary:d.dietary,medical:d.medical,notes:d.notes,summary:summary(d),submittedAt:d.submittedAt};
   }
   function send(d){
-    var body=JSON.stringify(payload(d));
-    return fetch(FORM_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:body})
-      .then(function(res){if(!res.ok)throw new Error("status "+res.status);},
-        function(){ // browser blocked the cross-site call: resend as a simple request
-          return fetch(FORM_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:body});
-        });
+    var p=payload(d); p.website=(document.getElementById("f-website")||{}).value||"";
+    return fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(p)})
+      .then(function(res){if(!res.ok)throw new Error("status "+res.status);});
   }
 
   function val(id){var e=document.getElementById(id);return e?e.value.trim():"";}
@@ -682,7 +680,7 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
     var d=collect();
     if(!d.name||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email)){err.textContent="Add your name and a valid email so Quad can reach you.";err.hidden=false;return;}
     var btn=document.getElementById("submit-btn");btn.disabled=true;btn.textContent="Sending…";
-    (FORM_ENDPOINT?send(d):Promise.reject(new Error("no endpoint"))).then(function(){show(true,d);},function(){show(false,d);})
+    (WORKER_URL?send(d):Promise.reject(new Error("no endpoint"))).then(function(){show(true,d);},function(){show(false,d);})
     .finally(function(){btn.disabled=false;btn.textContent="Send my interest";});
   });
   copyBtn.addEventListener("click",function(){
